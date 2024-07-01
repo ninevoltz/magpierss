@@ -244,7 +244,8 @@ class Snoopy
 						else
 							break;
 					}
-				}					
+				}
+				//var_dump($this);
 				return true;					
 				break;
 			default:
@@ -476,7 +477,7 @@ class Snoopy
 		$this->timed_out = false;
 		
 		fwrite($fp,$headers.$body,strlen($headers.$body));
-		
+
 		$this->_redirectaddr = false;
 		unset($this->headers);
 		
@@ -547,7 +548,7 @@ class Snoopy
 			$results = substr($results, 10);
 			$results = gzinflate($results);
 		}
-		
+
 		if ($this->read_timeout > 0 && $this->_check_timeout($fp))
 		{
 			$this->status=-100;

@@ -153,7 +153,7 @@ function fetch_rss ($url) {
         // setup headers
         if ( $cache_status == 'STALE' ) {
             $rss = $cache->get( $cache_key );
-            if ( $rss and $rss->etag and $rss->last_modified ) {
+            if ( $rss and isset($rss->etag) and isset($rss->last_modified) ) {
                 $request_headers['If-None-Match'] = $rss->etag;
                 $request_headers['If-Last-Modified'] = $rss->last_modified;
             }
@@ -286,6 +286,9 @@ function _fetch_remote_file ($url, $headers = "" ) {
     Output:     parsed RSS object (see rss_parse)
 \*=======================================================================*/
 function _response_to_rss ($resp) {
+	if (strpos($resp->results, "</rss>") > 1) {
+		$resp->results = substr($resp->results, 0, (strpos($resp->results, "</rss>") + 6));
+	}
     $rss = new MagpieRSS( $resp->results, MAGPIE_OUTPUT_ENCODING, MAGPIE_INPUT_ENCODING, MAGPIE_DETECT_ENCODING );
     
     // if RSS parsed successfully       
@@ -339,7 +342,7 @@ function init () {
     }
     
     if ( !defined('MAGPIE_CACHE_ON') ) {
-        define('MAGPIE_CACHE_ON', true);
+        define('MAGPIE_CACHE_ON', false);
     }
 
     if ( !defined('MAGPIE_CACHE_DIR') ) {
