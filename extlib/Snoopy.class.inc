@@ -124,7 +124,6 @@ class Snoopy
 
 	function fetch($URI)
 	{
-	
 		//preg_match("|^([^:]+)://([^:/]+)(:[\d]+)*(.*)|",$URI,$URI_PARTS);
 		$URI_PARTS = parse_url($URI);
 		if (!empty($URI_PARTS["user"]))
@@ -245,7 +244,7 @@ class Snoopy
 							break;
 					}
 				}
-				//var_dump($this);
+
 				return true;					
 				break;
 			default:
@@ -273,6 +272,7 @@ class Snoopy
 
 	function _striplinks($document)
 	{	
+
 		preg_match_all("'<\s*a\s+.*href\s*=\s*			# find <a href=
 						([\"\'])?					# find single or double quote
 						(?(1) (.*?)\\1 | ([^\s\>]+))		# if quote found, match up to next matching
@@ -307,6 +307,7 @@ class Snoopy
 
 	function _stripform($document)
 	{	
+
 		preg_match_all("'<\/?(FORM|INPUT|SELECT|TEXTAREA|(OPTION))[^<>]*>(?(2)(.*(?=<\/?(option|select)[^<>]*>[\r\n]*)|(?=[\r\n]*))|(?=[\r\n]*))'Usi",$document,$elements);
 		
 		// catenate the matches
@@ -327,7 +328,7 @@ class Snoopy
 
 	function _striptext($document)
 	{
-		
+
 		// I didn't use preg eval (//e) since that is only available in PHP 4.0.
 		// so, list your entities one by one here. I included some of the
 		// more common ones.
@@ -373,7 +374,7 @@ class Snoopy
 
 	function _expandlinks($links,$URI)
 	{
-		
+
 		preg_match("/^[^\?]+/",$URI,$match);
 
 		$match = preg_replace("|/[^\/\.]+\.[^\/\.]+$|","",$match[0]);
@@ -407,6 +408,7 @@ class Snoopy
 	
 	function _httprequest($url,$fp,$URI,$http_method,$content_type="",$body="")
 	{
+
 		if($this->passcookies && $this->_redirectaddr)
 			$this->setcookies();
 			
@@ -424,7 +426,7 @@ class Snoopy
 		if($this->use_gzip) {
 			// make sure PHP was built with --with-zlib
 			// and we can handle gzipp'ed data
-			if ( function_exists(gzinflate) ) {
+			if ( function_exists('gzinflate') ) {
 			   $headers .= "Accept-encoding: gzip\r\n";
 			}
 			else {
@@ -477,7 +479,7 @@ class Snoopy
 		$this->timed_out = false;
 		
 		fwrite($fp,$headers.$body,strlen($headers.$body));
-
+		
 		$this->_redirectaddr = false;
 		unset($this->headers);
 		
@@ -548,7 +550,7 @@ class Snoopy
 			$results = substr($results, 10);
 			$results = gzinflate($results);
 		}
-
+		
 		if ($this->read_timeout > 0 && $this->_check_timeout($fp))
 		{
 			$this->status=-100;
@@ -590,6 +592,7 @@ class Snoopy
 	
 	function _httpsrequest($url,$URI,$http_method,$content_type="",$body="")
 	{
+
 		if($this->passcookies && $this->_redirectaddr)
 			$this->setcookies();
 
@@ -664,7 +667,6 @@ class Snoopy
 			
 			
 		$results = implode("\r\n",$results);
-		
 		$result_headers = file("/tmp/$headerfile");
 						
 		$this->_redirectaddr = false;
