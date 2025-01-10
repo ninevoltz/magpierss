@@ -457,7 +457,7 @@ class Snoopy
 		{
 			if(!is_array($this->rawheaders))
 				$this->rawheaders = (array)$this->rawheaders;
-			while(list($headerKey,$headerVal) = each($this->rawheaders))
+			foreach($this->rawheaders as $headerKey => $headerVal)
 				$headers .= $headerKey.": ".$headerVal."\r\n";
 		}
 		if(!empty($content_type)) {
